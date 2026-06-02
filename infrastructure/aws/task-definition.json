@@ -1,0 +1,69 @@
+{
+  "family": "velocity-backend",
+  "networkMode": "awsvpc",
+  "requiresCompatibilities": ["FARGATE"],
+  "cpu": "512",
+  "memory": "1024",
+  "executionRoleArn": "arn:aws:iam::ACCOUNT_ID:role/ecsTaskExecutionRole",
+  "taskRoleArn": "arn:aws:iam::ACCOUNT_ID:role/velocityTaskRole",
+  "containerDefinitions": [
+    {
+      "name": "velocity-backend",
+      "image": "ACCOUNT_ID.dkr.ecr.REGION.amazonaws.com/velocity-backend:latest",
+      "essential": true,
+      "portMappings": [
+        {
+          "containerPort": 8080,
+          "protocol": "tcp"
+        }
+      ],
+      "environment": [
+        {
+          "name": "SPRING_PROFILES_ACTIVE",
+          "value": "production"
+        },
+        {
+          "name": "SPRING_DATASOURCE_URL",
+          "value": "jdbc:postgresql://velocity-db.CLUSTER_ID.REGION.rds.amazonaws.com:5432/velocity"
+        },
+        {
+          "name": "SPRING_REDIS_HOST",
+          "value": "velocity-cache.CLUSTER_ID.cache.amazonaws.com"
+        },
+        {
+          "name": "SPRING_REDIS_PORT",
+          "value": "6379"
+        },
+        {
+          "name": "SPRING_KAFKA_BOOTSTRAP_SERVERS",
+          "value": "b-1.velocity-kafka.CLUSTER_ID.kafka.REGION.amazonaws.com:9092"
+        }
+      ],
+      "secrets": [
+        {
+          "name": "SPRING_DATASOURCE_USERNAME",
+          "valueFrom": "arn:aws:secretsmanager:REGION:ACCOUNT_ID:secret:velocity/db-credentials:username::"
+        },
+        {
+          "name": "SPRING_DATASOURCE_PASSWORD",
+          "valueFrom": "arn:aws:secretsmanager:REGION:ACCOUNT_ID:secret:velocity/db-credentials:password::"
+        }
+      ],
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-group": "/ecs/velocity-backend",
+          "awslogs-region": "us-west-2",
+          "awslogs-stream-prefix": "ecs"
+        }
+      },
+      "healthCheck": {
+        "command": ["CMD-SHELL", "curl -f http://localhost:8080/actuator/health || exit 1"],
+        "interval": 30,
+        "timeout": 5,
+        "retries": 3,
+        "startPeriod": 60
+      }
+    }
+  ]
+}

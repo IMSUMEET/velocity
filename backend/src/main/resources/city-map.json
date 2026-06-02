@@ -1,0 +1,1559 @@
+{
+  "nodes": [
+    {
+      "id": "dt-1",
+      "x": 500,
+      "y": 370,
+      "name": "1st & Pike",
+      "zone": "Downtown"
+    },
+    {
+      "id": "dt-2",
+      "x": 560,
+      "y": 370,
+      "zone": "Downtown"
+    },
+    {
+      "id": "dt-3",
+      "x": 620,
+      "y": 370,
+      "name": "3rd & Pike",
+      "zone": "Downtown"
+    },
+    {
+      "id": "dt-4",
+      "x": 680,
+      "y": 370,
+      "zone": "Downtown"
+    },
+    {
+      "id": "dt-5",
+      "x": 500,
+      "y": 420,
+      "zone": "Downtown"
+    },
+    {
+      "id": "dt-6",
+      "x": 560,
+      "y": 420,
+      "name": "2nd & Union",
+      "zone": "Downtown"
+    },
+    {
+      "id": "dt-7",
+      "x": 620,
+      "y": 420,
+      "zone": "Downtown"
+    },
+    {
+      "id": "dt-8",
+      "x": 680,
+      "y": 420,
+      "zone": "Downtown"
+    },
+    {
+      "id": "dt-9",
+      "x": 500,
+      "y": 470,
+      "zone": "Downtown"
+    },
+    {
+      "id": "dt-10",
+      "x": 560,
+      "y": 470,
+      "name": "2nd & Madison",
+      "zone": "Downtown"
+    },
+    {
+      "id": "dt-11",
+      "x": 620,
+      "y": 470,
+      "zone": "Downtown"
+    },
+    {
+      "id": "dt-12",
+      "x": 680,
+      "y": 470,
+      "zone": "Downtown"
+    },
+    {
+      "id": "mk-1",
+      "x": 150,
+      "y": 300,
+      "name": "Market St",
+      "zone": "Market District"
+    },
+    {
+      "id": "mk-2",
+      "x": 220,
+      "y": 300,
+      "zone": "Market District"
+    },
+    {
+      "id": "mk-3",
+      "x": 290,
+      "y": 300,
+      "zone": "Market District"
+    },
+    {
+      "id": "mk-4",
+      "x": 150,
+      "y": 350,
+      "zone": "Market District"
+    },
+    {
+      "id": "mk-5",
+      "x": 220,
+      "y": 350,
+      "name": "Market Square",
+      "zone": "Market District"
+    },
+    {
+      "id": "mk-6",
+      "x": 290,
+      "y": 350,
+      "zone": "Market District"
+    },
+    {
+      "id": "mk-7",
+      "x": 150,
+      "y": 400,
+      "zone": "Market District"
+    },
+    {
+      "id": "mk-8",
+      "x": 220,
+      "y": 400,
+      "zone": "Market District"
+    },
+    {
+      "id": "mk-9",
+      "x": 290,
+      "y": 400,
+      "zone": "Market District"
+    },
+    {
+      "id": "ur-1",
+      "x": 830,
+      "y": 160,
+      "name": "Campus Dr",
+      "zone": "University Row"
+    },
+    {
+      "id": "ur-2",
+      "x": 900,
+      "y": 160,
+      "zone": "University Row"
+    },
+    {
+      "id": "ur-3",
+      "x": 970,
+      "y": 160,
+      "zone": "University Row"
+    },
+    {
+      "id": "ur-4",
+      "x": 830,
+      "y": 220,
+      "zone": "University Row"
+    },
+    {
+      "id": "ur-5",
+      "x": 900,
+      "y": 220,
+      "name": "University Ave",
+      "zone": "University Row"
+    },
+    {
+      "id": "ur-6",
+      "x": 970,
+      "y": 220,
+      "zone": "University Row"
+    },
+    {
+      "id": "ur-7",
+      "x": 830,
+      "y": 280,
+      "zone": "University Row"
+    },
+    {
+      "id": "ur-8",
+      "x": 900,
+      "y": 280,
+      "zone": "University Row"
+    },
+    {
+      "id": "hp-1",
+      "x": 780,
+      "y": 610,
+      "name": "Harbor Dr",
+      "zone": "Harbor Point"
+    },
+    {
+      "id": "hp-2",
+      "x": 850,
+      "y": 610,
+      "zone": "Harbor Point"
+    },
+    {
+      "id": "hp-3",
+      "x": 920,
+      "y": 610,
+      "zone": "Harbor Point"
+    },
+    {
+      "id": "hp-4",
+      "x": 780,
+      "y": 670,
+      "zone": "Harbor Point"
+    },
+    {
+      "id": "hp-5",
+      "x": 850,
+      "y": 670,
+      "name": "Harbor Plaza",
+      "zone": "Harbor Point"
+    },
+    {
+      "id": "hp-6",
+      "x": 920,
+      "y": 670,
+      "zone": "Harbor Point"
+    },
+    {
+      "id": "hp-7",
+      "x": 780,
+      "y": 730,
+      "zone": "Harbor Point"
+    },
+    {
+      "id": "hp-8",
+      "x": 850,
+      "y": 730,
+      "zone": "Harbor Point"
+    },
+    {
+      "id": "ch-1",
+      "x": 430,
+      "y": 110,
+      "name": "Heights Blvd",
+      "zone": "Capitol Heights"
+    },
+    {
+      "id": "ch-2",
+      "x": 500,
+      "y": 110,
+      "zone": "Capitol Heights"
+    },
+    {
+      "id": "ch-3",
+      "x": 570,
+      "y": 110,
+      "zone": "Capitol Heights"
+    },
+    {
+      "id": "ch-4",
+      "x": 430,
+      "y": 170,
+      "zone": "Capitol Heights"
+    },
+    {
+      "id": "ch-5",
+      "x": 500,
+      "y": 170,
+      "name": "Capitol Ave",
+      "zone": "Capitol Heights"
+    },
+    {
+      "id": "ch-6",
+      "x": 570,
+      "y": 170,
+      "zone": "Capitol Heights"
+    },
+    {
+      "id": "ch-7",
+      "x": 430,
+      "y": 230,
+      "zone": "Capitol Heights"
+    },
+    {
+      "id": "ch-8",
+      "x": 500,
+      "y": 230,
+      "zone": "Capitol Heights"
+    },
+    {
+      "id": "sd-1",
+      "x": 180,
+      "y": 580,
+      "name": "Stadium Rd",
+      "zone": "Stadium District"
+    },
+    {
+      "id": "sd-2",
+      "x": 250,
+      "y": 580,
+      "zone": "Stadium District"
+    },
+    {
+      "id": "sd-3",
+      "x": 320,
+      "y": 580,
+      "zone": "Stadium District"
+    },
+    {
+      "id": "sd-4",
+      "x": 180,
+      "y": 640,
+      "zone": "Stadium District"
+    },
+    {
+      "id": "sd-5",
+      "x": 250,
+      "y": 640,
+      "name": "Stadium Plaza",
+      "zone": "Stadium District"
+    },
+    {
+      "id": "sd-6",
+      "x": 320,
+      "y": 640,
+      "zone": "Stadium District"
+    },
+    {
+      "id": "sd-7",
+      "x": 180,
+      "y": 700,
+      "zone": "Stadium District"
+    },
+    {
+      "id": "sd-8",
+      "x": 250,
+      "y": 700,
+      "zone": "Stadium District"
+    },
+    {
+      "id": "cn-1",
+      "x": 370,
+      "y": 300,
+      "zone": "Market District"
+    },
+    {
+      "id": "cn-2",
+      "x": 430,
+      "y": 370,
+      "zone": "Downtown"
+    },
+    {
+      "id": "cn-3",
+      "x": 430,
+      "y": 300,
+      "zone": "Capitol Heights"
+    },
+    {
+      "id": "cn-4",
+      "x": 680,
+      "y": 300,
+      "zone": "Downtown"
+    },
+    {
+      "id": "cn-5",
+      "x": 750,
+      "y": 300,
+      "zone": "University Row"
+    },
+    {
+      "id": "cn-6",
+      "x": 680,
+      "y": 530,
+      "zone": "Downtown"
+    },
+    {
+      "id": "cn-7",
+      "x": 750,
+      "y": 530,
+      "zone": "Harbor Point"
+    },
+    {
+      "id": "cn-8",
+      "x": 400,
+      "y": 500,
+      "zone": "Stadium District"
+    },
+    {
+      "id": "cn-9",
+      "x": 350,
+      "y": 520,
+      "zone": "Stadium District"
+    },
+    {
+      "id": "cn-10",
+      "x": 560,
+      "y": 530,
+      "zone": "Downtown"
+    }
+  ],
+  "edges": [
+    {
+      "id": "e1",
+      "from": "dt-1",
+      "to": "dt-2",
+      "distance": 60,
+      "speedLimit": 4,
+      "congestion": 0.4,
+      "isMajor": true
+    },
+    {
+      "id": "e2",
+      "from": "dt-2",
+      "to": "dt-3",
+      "distance": 60,
+      "speedLimit": 4,
+      "congestion": 0.5,
+      "isMajor": true
+    },
+    {
+      "id": "e3",
+      "from": "dt-3",
+      "to": "dt-4",
+      "distance": 60,
+      "speedLimit": 4,
+      "congestion": 0.3,
+      "isMajor": true
+    },
+    {
+      "id": "e4",
+      "from": "dt-5",
+      "to": "dt-6",
+      "distance": 60,
+      "speedLimit": 3,
+      "congestion": 0.6,
+      "isMajor": false
+    },
+    {
+      "id": "e5",
+      "from": "dt-6",
+      "to": "dt-7",
+      "distance": 60,
+      "speedLimit": 3,
+      "congestion": 0.5,
+      "isMajor": false
+    },
+    {
+      "id": "e6",
+      "from": "dt-7",
+      "to": "dt-8",
+      "distance": 60,
+      "speedLimit": 3,
+      "congestion": 0.4,
+      "isMajor": false
+    },
+    {
+      "id": "e7",
+      "from": "dt-9",
+      "to": "dt-10",
+      "distance": 60,
+      "speedLimit": 3,
+      "congestion": 0.3,
+      "isMajor": false
+    },
+    {
+      "id": "e8",
+      "from": "dt-10",
+      "to": "dt-11",
+      "distance": 60,
+      "speedLimit": 3,
+      "congestion": 0.4,
+      "isMajor": false
+    },
+    {
+      "id": "e9",
+      "from": "dt-11",
+      "to": "dt-12",
+      "distance": 60,
+      "speedLimit": 3,
+      "congestion": 0.3,
+      "isMajor": false
+    },
+    {
+      "id": "e10",
+      "from": "dt-1",
+      "to": "dt-5",
+      "distance": 50,
+      "speedLimit": 4,
+      "congestion": 0.4,
+      "isMajor": true
+    },
+    {
+      "id": "e11",
+      "from": "dt-5",
+      "to": "dt-9",
+      "distance": 50,
+      "speedLimit": 4,
+      "congestion": 0.3,
+      "isMajor": true
+    },
+    {
+      "id": "e12",
+      "from": "dt-2",
+      "to": "dt-6",
+      "distance": 50,
+      "speedLimit": 3,
+      "congestion": 0.5,
+      "isMajor": false
+    },
+    {
+      "id": "e13",
+      "from": "dt-6",
+      "to": "dt-10",
+      "distance": 50,
+      "speedLimit": 3,
+      "congestion": 0.4,
+      "isMajor": false
+    },
+    {
+      "id": "e14",
+      "from": "dt-3",
+      "to": "dt-7",
+      "distance": 50,
+      "speedLimit": 3,
+      "congestion": 0.4,
+      "isMajor": false
+    },
+    {
+      "id": "e15",
+      "from": "dt-7",
+      "to": "dt-11",
+      "distance": 50,
+      "speedLimit": 3,
+      "congestion": 0.3,
+      "isMajor": false
+    },
+    {
+      "id": "e16",
+      "from": "dt-4",
+      "to": "dt-8",
+      "distance": 50,
+      "speedLimit": 4,
+      "congestion": 0.3,
+      "isMajor": true
+    },
+    {
+      "id": "e17",
+      "from": "dt-8",
+      "to": "dt-12",
+      "distance": 50,
+      "speedLimit": 4,
+      "congestion": 0.4,
+      "isMajor": true
+    },
+    {
+      "id": "e18",
+      "from": "mk-1",
+      "to": "mk-2",
+      "distance": 70,
+      "speedLimit": 3,
+      "congestion": 0.2,
+      "isMajor": true
+    },
+    {
+      "id": "e19",
+      "from": "mk-2",
+      "to": "mk-3",
+      "distance": 70,
+      "speedLimit": 3,
+      "congestion": 0.2,
+      "isMajor": false
+    },
+    {
+      "id": "e20",
+      "from": "mk-4",
+      "to": "mk-5",
+      "distance": 70,
+      "speedLimit": 3,
+      "congestion": 0.3,
+      "isMajor": false
+    },
+    {
+      "id": "e21",
+      "from": "mk-5",
+      "to": "mk-6",
+      "distance": 70,
+      "speedLimit": 3,
+      "congestion": 0.2,
+      "isMajor": false
+    },
+    {
+      "id": "e22",
+      "from": "mk-7",
+      "to": "mk-8",
+      "distance": 70,
+      "speedLimit": 2,
+      "congestion": 0.2,
+      "isMajor": false
+    },
+    {
+      "id": "e23",
+      "from": "mk-8",
+      "to": "mk-9",
+      "distance": 70,
+      "speedLimit": 2,
+      "congestion": 0.2,
+      "isMajor": false
+    },
+    {
+      "id": "e24",
+      "from": "mk-1",
+      "to": "mk-4",
+      "distance": 50,
+      "speedLimit": 3,
+      "congestion": 0.2,
+      "isMajor": false
+    },
+    {
+      "id": "e25",
+      "from": "mk-4",
+      "to": "mk-7",
+      "distance": 50,
+      "speedLimit": 2,
+      "congestion": 0.2,
+      "isMajor": false
+    },
+    {
+      "id": "e26",
+      "from": "mk-2",
+      "to": "mk-5",
+      "distance": 50,
+      "speedLimit": 3,
+      "congestion": 0.3,
+      "isMajor": true
+    },
+    {
+      "id": "e27",
+      "from": "mk-5",
+      "to": "mk-8",
+      "distance": 50,
+      "speedLimit": 2,
+      "congestion": 0.2,
+      "isMajor": false
+    },
+    {
+      "id": "e28",
+      "from": "mk-3",
+      "to": "mk-6",
+      "distance": 50,
+      "speedLimit": 3,
+      "congestion": 0.2,
+      "isMajor": false
+    },
+    {
+      "id": "e29",
+      "from": "mk-6",
+      "to": "mk-9",
+      "distance": 50,
+      "speedLimit": 2,
+      "congestion": 0.2,
+      "isMajor": false
+    },
+    {
+      "id": "e30",
+      "from": "ur-1",
+      "to": "ur-2",
+      "distance": 70,
+      "speedLimit": 3,
+      "congestion": 0.2,
+      "isMajor": true
+    },
+    {
+      "id": "e31",
+      "from": "ur-2",
+      "to": "ur-3",
+      "distance": 70,
+      "speedLimit": 3,
+      "congestion": 0.2,
+      "isMajor": false
+    },
+    {
+      "id": "e32",
+      "from": "ur-4",
+      "to": "ur-5",
+      "distance": 70,
+      "speedLimit": 3,
+      "congestion": 0.3,
+      "isMajor": false
+    },
+    {
+      "id": "e33",
+      "from": "ur-5",
+      "to": "ur-6",
+      "distance": 70,
+      "speedLimit": 3,
+      "congestion": 0.2,
+      "isMajor": false
+    },
+    {
+      "id": "e34",
+      "from": "ur-7",
+      "to": "ur-8",
+      "distance": 70,
+      "speedLimit": 2,
+      "congestion": 0.2,
+      "isMajor": false
+    },
+    {
+      "id": "e35",
+      "from": "ur-1",
+      "to": "ur-4",
+      "distance": 60,
+      "speedLimit": 3,
+      "congestion": 0.2,
+      "isMajor": true
+    },
+    {
+      "id": "e36",
+      "from": "ur-4",
+      "to": "ur-7",
+      "distance": 60,
+      "speedLimit": 2,
+      "congestion": 0.2,
+      "isMajor": false
+    },
+    {
+      "id": "e37",
+      "from": "ur-2",
+      "to": "ur-5",
+      "distance": 60,
+      "speedLimit": 3,
+      "congestion": 0.3,
+      "isMajor": false
+    },
+    {
+      "id": "e38",
+      "from": "ur-5",
+      "to": "ur-8",
+      "distance": 60,
+      "speedLimit": 2,
+      "congestion": 0.2,
+      "isMajor": false
+    },
+    {
+      "id": "e39",
+      "from": "ur-3",
+      "to": "ur-6",
+      "distance": 60,
+      "speedLimit": 3,
+      "congestion": 0.2,
+      "isMajor": false
+    },
+    {
+      "id": "e40",
+      "from": "hp-1",
+      "to": "hp-2",
+      "distance": 70,
+      "speedLimit": 3,
+      "congestion": 0.2,
+      "isMajor": true
+    },
+    {
+      "id": "e41",
+      "from": "hp-2",
+      "to": "hp-3",
+      "distance": 70,
+      "speedLimit": 3,
+      "congestion": 0.2,
+      "isMajor": false
+    },
+    {
+      "id": "e42",
+      "from": "hp-4",
+      "to": "hp-5",
+      "distance": 70,
+      "speedLimit": 3,
+      "congestion": 0.3,
+      "isMajor": false
+    },
+    {
+      "id": "e43",
+      "from": "hp-5",
+      "to": "hp-6",
+      "distance": 70,
+      "speedLimit": 3,
+      "congestion": 0.2,
+      "isMajor": false
+    },
+    {
+      "id": "e44",
+      "from": "hp-7",
+      "to": "hp-8",
+      "distance": 70,
+      "speedLimit": 2,
+      "congestion": 0.2,
+      "isMajor": false
+    },
+    {
+      "id": "e45",
+      "from": "hp-1",
+      "to": "hp-4",
+      "distance": 60,
+      "speedLimit": 3,
+      "congestion": 0.2,
+      "isMajor": false
+    },
+    {
+      "id": "e46",
+      "from": "hp-4",
+      "to": "hp-7",
+      "distance": 60,
+      "speedLimit": 2,
+      "congestion": 0.2,
+      "isMajor": false
+    },
+    {
+      "id": "e47",
+      "from": "hp-2",
+      "to": "hp-5",
+      "distance": 60,
+      "speedLimit": 3,
+      "congestion": 0.2,
+      "isMajor": true
+    },
+    {
+      "id": "e48",
+      "from": "hp-5",
+      "to": "hp-8",
+      "distance": 60,
+      "speedLimit": 2,
+      "congestion": 0.2,
+      "isMajor": false
+    },
+    {
+      "id": "e49",
+      "from": "hp-3",
+      "to": "hp-6",
+      "distance": 60,
+      "speedLimit": 3,
+      "congestion": 0.2,
+      "isMajor": false
+    },
+    {
+      "id": "e50",
+      "from": "ch-1",
+      "to": "ch-2",
+      "distance": 70,
+      "speedLimit": 3,
+      "congestion": 0.2,
+      "isMajor": true
+    },
+    {
+      "id": "e51",
+      "from": "ch-2",
+      "to": "ch-3",
+      "distance": 70,
+      "speedLimit": 3,
+      "congestion": 0.2,
+      "isMajor": false
+    },
+    {
+      "id": "e52",
+      "from": "ch-4",
+      "to": "ch-5",
+      "distance": 70,
+      "speedLimit": 3,
+      "congestion": 0.3,
+      "isMajor": false
+    },
+    {
+      "id": "e53",
+      "from": "ch-5",
+      "to": "ch-6",
+      "distance": 70,
+      "speedLimit": 3,
+      "congestion": 0.2,
+      "isMajor": false
+    },
+    {
+      "id": "e54",
+      "from": "ch-7",
+      "to": "ch-8",
+      "distance": 70,
+      "speedLimit": 2,
+      "congestion": 0.2,
+      "isMajor": false
+    },
+    {
+      "id": "e55",
+      "from": "ch-1",
+      "to": "ch-4",
+      "distance": 60,
+      "speedLimit": 3,
+      "congestion": 0.2,
+      "isMajor": false
+    },
+    {
+      "id": "e56",
+      "from": "ch-4",
+      "to": "ch-7",
+      "distance": 60,
+      "speedLimit": 2,
+      "congestion": 0.2,
+      "isMajor": false
+    },
+    {
+      "id": "e57",
+      "from": "ch-2",
+      "to": "ch-5",
+      "distance": 60,
+      "speedLimit": 3,
+      "congestion": 0.3,
+      "isMajor": true
+    },
+    {
+      "id": "e58",
+      "from": "ch-5",
+      "to": "ch-8",
+      "distance": 60,
+      "speedLimit": 2,
+      "congestion": 0.2,
+      "isMajor": false
+    },
+    {
+      "id": "e59",
+      "from": "ch-3",
+      "to": "ch-6",
+      "distance": 60,
+      "speedLimit": 3,
+      "congestion": 0.2,
+      "isMajor": false
+    },
+    {
+      "id": "e60",
+      "from": "sd-1",
+      "to": "sd-2",
+      "distance": 70,
+      "speedLimit": 3,
+      "congestion": 0.2,
+      "isMajor": true
+    },
+    {
+      "id": "e61",
+      "from": "sd-2",
+      "to": "sd-3",
+      "distance": 70,
+      "speedLimit": 3,
+      "congestion": 0.2,
+      "isMajor": false
+    },
+    {
+      "id": "e62",
+      "from": "sd-4",
+      "to": "sd-5",
+      "distance": 70,
+      "speedLimit": 3,
+      "congestion": 0.3,
+      "isMajor": false
+    },
+    {
+      "id": "e63",
+      "from": "sd-5",
+      "to": "sd-6",
+      "distance": 70,
+      "speedLimit": 3,
+      "congestion": 0.2,
+      "isMajor": false
+    },
+    {
+      "id": "e64",
+      "from": "sd-7",
+      "to": "sd-8",
+      "distance": 70,
+      "speedLimit": 2,
+      "congestion": 0.2,
+      "isMajor": false
+    },
+    {
+      "id": "e65",
+      "from": "sd-1",
+      "to": "sd-4",
+      "distance": 60,
+      "speedLimit": 3,
+      "congestion": 0.2,
+      "isMajor": false
+    },
+    {
+      "id": "e66",
+      "from": "sd-4",
+      "to": "sd-7",
+      "distance": 60,
+      "speedLimit": 2,
+      "congestion": 0.2,
+      "isMajor": false
+    },
+    {
+      "id": "e67",
+      "from": "sd-2",
+      "to": "sd-5",
+      "distance": 60,
+      "speedLimit": 3,
+      "congestion": 0.2,
+      "isMajor": true
+    },
+    {
+      "id": "e68",
+      "from": "sd-5",
+      "to": "sd-8",
+      "distance": 60,
+      "speedLimit": 2,
+      "congestion": 0.2,
+      "isMajor": false
+    },
+    {
+      "id": "e69",
+      "from": "sd-3",
+      "to": "sd-6",
+      "distance": 60,
+      "speedLimit": 3,
+      "congestion": 0.2,
+      "isMajor": false
+    },
+    {
+      "id": "e70",
+      "from": "mk-3",
+      "to": "cn-1",
+      "distance": 80,
+      "speedLimit": 4,
+      "congestion": 0.3,
+      "isMajor": true
+    },
+    {
+      "id": "e71",
+      "from": "cn-1",
+      "to": "cn-3",
+      "distance": 60,
+      "speedLimit": 4,
+      "congestion": 0.3,
+      "isMajor": true
+    },
+    {
+      "id": "e72",
+      "from": "cn-3",
+      "to": "cn-2",
+      "distance": 70,
+      "speedLimit": 4,
+      "congestion": 0.4,
+      "isMajor": true
+    },
+    {
+      "id": "e73",
+      "from": "cn-2",
+      "to": "dt-1",
+      "distance": 70,
+      "speedLimit": 4,
+      "congestion": 0.5,
+      "isMajor": true
+    },
+    {
+      "id": "e74",
+      "from": "mk-9",
+      "to": "cn-8",
+      "distance": 149,
+      "speedLimit": 4,
+      "congestion": 0.3,
+      "isMajor": true
+    },
+    {
+      "id": "e75",
+      "from": "ch-7",
+      "to": "cn-3",
+      "distance": 70,
+      "speedLimit": 4,
+      "congestion": 0.3,
+      "isMajor": true
+    },
+    {
+      "id": "e76",
+      "from": "ch-8",
+      "to": "dt-1",
+      "distance": 140,
+      "speedLimit": 5,
+      "congestion": 0.4,
+      "isMajor": true
+    },
+    {
+      "id": "e77",
+      "from": "dt-4",
+      "to": "cn-4",
+      "distance": 70,
+      "speedLimit": 4,
+      "congestion": 0.4,
+      "isMajor": true
+    },
+    {
+      "id": "e78",
+      "from": "cn-4",
+      "to": "cn-5",
+      "distance": 70,
+      "speedLimit": 4,
+      "congestion": 0.3,
+      "isMajor": true
+    },
+    {
+      "id": "e79",
+      "from": "cn-5",
+      "to": "ur-7",
+      "distance": 82,
+      "speedLimit": 4,
+      "congestion": 0.3,
+      "isMajor": true
+    },
+    {
+      "id": "e80",
+      "from": "dt-12",
+      "to": "cn-6",
+      "distance": 60,
+      "speedLimit": 4,
+      "congestion": 0.3,
+      "isMajor": true
+    },
+    {
+      "id": "e81",
+      "from": "cn-6",
+      "to": "cn-7",
+      "distance": 70,
+      "speedLimit": 4,
+      "congestion": 0.3,
+      "isMajor": true
+    },
+    {
+      "id": "e82",
+      "from": "cn-7",
+      "to": "hp-1",
+      "distance": 85,
+      "speedLimit": 4,
+      "congestion": 0.3,
+      "isMajor": true
+    },
+    {
+      "id": "e83",
+      "from": "dt-9",
+      "to": "cn-8",
+      "distance": 104,
+      "speedLimit": 4,
+      "congestion": 0.4,
+      "isMajor": true
+    },
+    {
+      "id": "e84",
+      "from": "cn-8",
+      "to": "cn-9",
+      "distance": 54,
+      "speedLimit": 3,
+      "congestion": 0.3,
+      "isMajor": false
+    },
+    {
+      "id": "e85",
+      "from": "cn-9",
+      "to": "sd-3",
+      "distance": 67,
+      "speedLimit": 4,
+      "congestion": 0.3,
+      "isMajor": true
+    },
+    {
+      "id": "e86",
+      "from": "dt-10",
+      "to": "cn-10",
+      "distance": 60,
+      "speedLimit": 3,
+      "congestion": 0.3,
+      "isMajor": false
+    },
+    {
+      "id": "e87",
+      "from": "cn-10",
+      "to": "cn-6",
+      "distance": 120,
+      "speedLimit": 3,
+      "congestion": 0.3,
+      "isMajor": false
+    },
+    {
+      "id": "e88",
+      "from": "mk-2",
+      "to": "ch-1",
+      "distance": 283,
+      "speedLimit": 5,
+      "congestion": 0.2,
+      "isMajor": true
+    },
+    {
+      "id": "e89",
+      "from": "mk-7",
+      "to": "sd-1",
+      "distance": 182,
+      "speedLimit": 5,
+      "congestion": 0.2,
+      "isMajor": true
+    },
+    {
+      "id": "e90",
+      "from": "ur-8",
+      "to": "cn-5",
+      "distance": 151,
+      "speedLimit": 3,
+      "congestion": 0.2,
+      "isMajor": false
+    },
+    {
+      "id": "e91",
+      "from": "cn-4",
+      "to": "cn-6",
+      "distance": 230,
+      "speedLimit": 5,
+      "congestion": 0.3,
+      "isMajor": true
+    },
+    {
+      "id": "e92",
+      "from": "hp-7",
+      "to": "hp-8",
+      "distance": 70,
+      "speedLimit": 2,
+      "congestion": 0.2,
+      "isMajor": false
+    },
+    {
+      "id": "e93",
+      "from": "sd-6",
+      "to": "cn-10",
+      "distance": 264,
+      "speedLimit": 4,
+      "congestion": 0.3,
+      "isMajor": true
+    }
+  ],
+  "buildings": [
+    {
+      "id": "b1",
+      "name": "Pike Street Pizza",
+      "type": "restaurant",
+      "nodeId": "dt-1",
+      "x": 488,
+      "y": 358,
+      "zone": "Downtown",
+      "icon": "🍕"
+    },
+    {
+      "id": "b2",
+      "name": "Rainier Coffee House",
+      "type": "restaurant",
+      "nodeId": "mk-5",
+      "x": 232,
+      "y": 338,
+      "zone": "Market District",
+      "icon": "☕"
+    },
+    {
+      "id": "b3",
+      "name": "Harbor Sushi",
+      "type": "restaurant",
+      "nodeId": "hp-2",
+      "x": 862,
+      "y": 598,
+      "zone": "Harbor Point",
+      "icon": "🍣"
+    },
+    {
+      "id": "b4",
+      "name": "Capitol Grill",
+      "type": "restaurant",
+      "nodeId": "ch-5",
+      "x": 512,
+      "y": 158,
+      "zone": "Capitol Heights",
+      "icon": "🥩"
+    },
+    {
+      "id": "b5",
+      "name": "Stadium Burgers",
+      "type": "restaurant",
+      "nodeId": "sd-2",
+      "x": 262,
+      "y": 568,
+      "zone": "Stadium District",
+      "icon": "🍔"
+    },
+    {
+      "id": "b6",
+      "name": "Campus Tacos",
+      "type": "restaurant",
+      "nodeId": "ur-5",
+      "x": 912,
+      "y": 208,
+      "zone": "University Row",
+      "icon": "🌮"
+    },
+    {
+      "id": "b7",
+      "name": "Faculty Lounge",
+      "type": "restaurant",
+      "nodeId": "ur-2",
+      "x": 888,
+      "y": 148,
+      "zone": "University Row",
+      "icon": "🍽️"
+    },
+    {
+      "id": "b8",
+      "name": "Din Tai Fung",
+      "type": "restaurant",
+      "nodeId": "dt-3",
+      "x": 632,
+      "y": 358,
+      "zone": "Downtown",
+      "icon": "🥟"
+    },
+    {
+      "id": "b9",
+      "name": "Wild Ginger",
+      "type": "restaurant",
+      "nodeId": "dt-6",
+      "x": 548,
+      "y": 408,
+      "zone": "Downtown",
+      "icon": "🍜"
+    },
+    {
+      "id": "b10",
+      "name": "Japonessa",
+      "type": "restaurant",
+      "nodeId": "dt-7",
+      "x": 632,
+      "y": 432,
+      "zone": "Downtown",
+      "icon": "🍱"
+    },
+    {
+      "id": "b11",
+      "name": "Aurora Apartments",
+      "type": "apartment",
+      "nodeId": "ch-4",
+      "x": 418,
+      "y": 182,
+      "zone": "Capitol Heights",
+      "icon": "🏢"
+    },
+    {
+      "id": "b12",
+      "name": "Skyline Condos",
+      "type": "apartment",
+      "nodeId": "dt-8",
+      "x": 692,
+      "y": 408,
+      "zone": "Downtown",
+      "icon": "🏢"
+    },
+    {
+      "id": "b13",
+      "name": "Bayview Residence",
+      "type": "house",
+      "nodeId": "hp-4",
+      "x": 768,
+      "y": 682,
+      "zone": "Harbor Point",
+      "icon": "🏠"
+    },
+    {
+      "id": "b14",
+      "name": "Riverside Apartments",
+      "type": "apartment",
+      "nodeId": "sd-5",
+      "x": 238,
+      "y": 652,
+      "zone": "Stadium District",
+      "icon": "🏢"
+    },
+    {
+      "id": "b15",
+      "name": "Hilltop House",
+      "type": "house",
+      "nodeId": "ch-2",
+      "x": 512,
+      "y": 98,
+      "zone": "Capitol Heights",
+      "icon": "🏡"
+    },
+    {
+      "id": "b16",
+      "name": "Harbor View Apts",
+      "type": "apartment",
+      "nodeId": "hp-5",
+      "x": 862,
+      "y": 658,
+      "zone": "Harbor Point",
+      "icon": "🏢"
+    },
+    {
+      "id": "b17",
+      "name": "Elm Cottage",
+      "type": "house",
+      "nodeId": "mk-7",
+      "x": 138,
+      "y": 412,
+      "zone": "Market District",
+      "icon": "🏡"
+    },
+    {
+      "id": "b18",
+      "name": "Campus Housing",
+      "type": "apartment",
+      "nodeId": "ur-6",
+      "x": 982,
+      "y": 208,
+      "zone": "University Row",
+      "icon": "🏢"
+    },
+    {
+      "id": "b19",
+      "name": "Union Office Tower",
+      "type": "office",
+      "nodeId": "dt-10",
+      "x": 572,
+      "y": 458,
+      "zone": "Downtown",
+      "icon": "🏛️"
+    },
+    {
+      "id": "b20",
+      "name": "Tech Hub Offices",
+      "type": "office",
+      "nodeId": "ur-4",
+      "x": 818,
+      "y": 232,
+      "zone": "University Row",
+      "icon": "🏦"
+    },
+    {
+      "id": "b21",
+      "name": "Harbor Warehouse",
+      "type": "office",
+      "nodeId": "hp-6",
+      "x": 932,
+      "y": 658,
+      "zone": "Harbor Point",
+      "icon": "🏭"
+    },
+    {
+      "id": "b22",
+      "name": "Green Market",
+      "type": "shop",
+      "nodeId": "mk-2",
+      "x": 232,
+      "y": 288,
+      "zone": "Market District",
+      "icon": "🛒"
+    },
+    {
+      "id": "b23",
+      "name": "Central Pharmacy",
+      "type": "shop",
+      "nodeId": "dt-2",
+      "x": 548,
+      "y": 358,
+      "zone": "Downtown",
+      "icon": "💊"
+    },
+    {
+      "id": "b24",
+      "name": "Pioneer Books",
+      "type": "shop",
+      "nodeId": "mk-4",
+      "x": 138,
+      "y": 338,
+      "zone": "Market District",
+      "icon": "📚"
+    },
+    {
+      "id": "b25",
+      "name": "Velocity Park",
+      "type": "park",
+      "nodeId": "dt-11",
+      "x": 632,
+      "y": 482,
+      "zone": "Downtown",
+      "icon": "🌳"
+    },
+    {
+      "id": "b26",
+      "name": "Heights Garden",
+      "type": "park",
+      "nodeId": "ch-6",
+      "x": 582,
+      "y": 158,
+      "zone": "Capitol Heights",
+      "icon": "🌲"
+    }
+  ],
+  "zones": [
+    {
+      "id": "z1",
+      "name": "Downtown",
+      "centerX": 580,
+      "centerY": 400,
+      "radius": 160,
+      "color": "#ff6b35",
+      "labelX": 580,
+      "labelY": 355
+    },
+    {
+      "id": "z2",
+      "name": "Market District",
+      "centerX": 220,
+      "centerY": 340,
+      "radius": 140,
+      "color": "#fbbf24",
+      "labelX": 220,
+      "labelY": 290
+    },
+    {
+      "id": "z3",
+      "name": "University Row",
+      "centerX": 900,
+      "centerY": 200,
+      "radius": 140,
+      "color": "#a78bfa",
+      "labelX": 900,
+      "labelY": 148
+    },
+    {
+      "id": "z4",
+      "name": "Harbor Point",
+      "centerX": 850,
+      "centerY": 650,
+      "radius": 140,
+      "color": "#60a5fa",
+      "labelX": 850,
+      "labelY": 598
+    },
+    {
+      "id": "z5",
+      "name": "Capitol Heights",
+      "centerX": 500,
+      "centerY": 150,
+      "radius": 130,
+      "color": "#34d399",
+      "labelX": 500,
+      "labelY": 100
+    },
+    {
+      "id": "z6",
+      "name": "Stadium District",
+      "centerX": 250,
+      "centerY": 620,
+      "radius": 130,
+      "color": "#f87171",
+      "labelX": 250,
+      "labelY": 568
+    }
+  ]
+}
