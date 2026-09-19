@@ -4,6 +4,28 @@
 
 VeloCity is a full-stack prototype that simulates a city-scale delivery marketplace. A Spring Boot backend runs the authoritative simulation engine, while a React admin UI provides real-time observability and operator controls across 9 specialized dashboard tabs.
 
+## Preview
+
+<p align="center">
+  <img src="docs/screenshots/dashboard.gif" alt="VeloCity live control plane" width="900" />
+</p>
+
+<p align="center">
+  <a href="docs/screenshots/dashboard.mp4">Watch the dashboard walkthrough (MP4)</a>
+</p>
+
+<p align="center">
+  <img src="docs/screenshots/marketplace.png" alt="Marketplace tab with live city map and KPIs" width="900" />
+</p>
+
+| Orders | Drivers |
+|:---:|:---:|
+| <img src="docs/screenshots/orders.png" alt="Orders tab" width="440" /> | <img src="docs/screenshots/drivers.png" alt="Drivers tab" width="440" /> |
+
+| Dispatch Engine | Analytics |
+|:---:|:---:|
+| <img src="docs/screenshots/dispatch.png" alt="Dispatch Engine tab" width="440" /> | <img src="docs/screenshots/analytics.png" alt="Analytics tab" width="440" /> |
+
 ## Quick Start
 
 ```bash
@@ -163,6 +185,7 @@ VeloCity/
 │       ├── config/               # WebSocket, Kafka, Redis, CORS, Scheduler
 │       └── kafka/                # KafkaProducer/Consumer
 ├── shared/city-map.json          # Canonical city graph (generated)
+├── docs/screenshots/             # Dashboard GIF, MP4, and tab screenshots
 ├── docker-compose.yml            # Full stack orchestration
 └── README.md
 ```
