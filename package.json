@@ -1,0 +1,19 @@
+{
+  "name": "velocity",
+  "private": true,
+  "version": "2.0.0",
+  "description": "VeloCity — Dispatch Strategy Lab",
+  "workspaces": ["engine", "server", "web"],
+  "scripts": {
+    "dev": "concurrently -n server,web -c cyan,magenta \"npm:dev:server\" \"npm:dev:web\"",
+    "dev:server": "npm run dev -w server",
+    "dev:web": "npm run dev -w web",
+    "build": "npm run build -w web",
+    "start:server": "npm run start -w server",
+    "experiment": "npm run experiment -w server",
+    "test": "npm run test -w engine"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.0"
+  }
+}

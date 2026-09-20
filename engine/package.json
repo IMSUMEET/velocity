@@ -1,0 +1,17 @@
+{
+  "name": "@velocity/engine",
+  "version": "2.0.0",
+  "type": "module",
+  "main": "src/index.ts",
+  "types": "src/index.ts",
+  "exports": {
+    ".": "./src/index.ts",
+    "./data/city-map.json": "./src/data/city-map.json"
+  },
+  "scripts": {
+    "test": "vitest run"
+  },
+  "devDependencies": {
+    "vitest": "^2.1.8"
+  }
+}

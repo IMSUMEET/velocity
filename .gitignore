@@ -1,16 +1,12 @@
-# Java
-target/
-*.class
-*.jar
-*.war
-*.ear
-.mvn/wrapper/maven-wrapper.jar
-
 # Node
 node_modules/
 dist/
+.next/
+out/
+build/
 .env
 .env.local
+*.tsbuildinfo
 
 # IDE
 .idea/
@@ -23,13 +19,6 @@ dist/
 .DS_Store
 Thumbs.db
 
-# Docker
-docker-compose.override.yml
-
 # Logs
 *.log
 logs/
-
-# Build
-build/
-out/

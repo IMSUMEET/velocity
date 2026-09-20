@@ -9,7 +9,7 @@
 
 ## Abstract
 
-Last-mile delivery represents approximately 53% of total logistics cost and poses a fundamental combinatorial optimization challenge at scale. This paper presents **VeloCity**, a full-stack real-time simulation platform built to study the Dynamic Batching Vehicle Dispatch Problem (DBVDP) — a variant of the Online Vehicle Routing Problem with Time Windows (OVRPTW). The platform implements and compares five dispatch strategies across a synthetic 63-node, 6-zone urban road network: three greedy baselines (Fastest ETA, Lowest Cost, Balanced) and two novel online batching approaches (Batch Nearby using nearest-neighbor clustering; Batch Optimal using a greedy TSP insertion heuristic). Controlled experiments with fixed random seeds demonstrate that batch strategies reduce total fleet miles by 12–18% relative to greedy baselines, at the cost of a modest increase in tail latency (P95 +8–14 seconds), yielding a controllable efficiency-latency trade-off. The platform provides a reproducible experimental framework with CSV and LaTeX export for academic use.
+Last-mile delivery represents approximately 53% of total logistics cost and poses a fundamental combinatorial optimization challenge at scale. This paper presents **VeloCity**, a full-stack real-time simulation platform built to study the Dynamic Batching Vehicle Dispatch Problem (DBVDP) — a variant of the Online Vehicle Routing Problem with Time Windows (OVRPTW). The platform implements and compares five dispatch strategies across a synthetic 63-node, 6-zone urban road network: three greedy baselines (Fastest ETA, Lowest Cost, Balanced) and two online batching approaches (Batch Nearby using nearest-neighbor clustering; Batch Optimal using a greedy TSP insertion heuristic). Controlled experiments driven by a single seeded pseudo-random generator — so every strategy sees a bit-for-bit identical demand stream — show that in a dense-demand regime the batch strategies reduce total fleet distance by **~11%** relative to the Balanced greedy baseline while *completing more orders* (80 vs 75), at the cost of a modest increase in tail latency (**P95 +6.5 s**), yielding a controllable efficiency–latency trade-off. All latency metrics are measured in virtual simulation time (ticks), making them reproducible and independent of wall-clock speed. The platform provides a reproducible experimental framework with CSV and LaTeX export for academic use.
 
 **Keywords:** last-mile delivery, vehicle routing, online batching, dispatch optimization, simulation
 
@@ -62,31 +62,32 @@ VeloCity follows an **authoritative server simulation** pattern: all simulation 
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
-│                        BROWSER (React 18)                       │
-│  AdminShell → [Marketplace | Orders | Drivers | Dispatch | ...]  │
-│  usePlatformStore (Zustand) ← applySnapshot() ← STOMP WS       │
+│                        BROWSER (Next.js 14)                     │
+│  Lab · Operations · Fleet & Orders · Method                      │
+│  Zustand store ← applySnapshot() ← WebSocket                    │
 │  api.ts (fetch) ──────────────────────────────────────────────► │
 └──────────────────────────────┬──────────────────────────────────┘
                                │ REST /api/*
-                               │ WS /ws-raw → /topic/snapshot
+                               │ WS /ws → snapshot per tick
 ┌──────────────────────────────▼──────────────────────────────────┐
-│                     SPRING BOOT 3.2 (Java 21)                   │
+│                  NODE / TypeScript (Fastify)                    │
 │                                                                  │
-│  SimulationService (@Scheduled 500ms)                           │
-│    └─ SimulationEngine (synchronized lock)                      │
+│  LiveSim (tick loop, 500ms)                                     │
+│    └─ SimulationEngine (single seeded PRNG)                     │
 │         ├─ DispatchEngine (greedy + batch strategies)           │
 │         ├─ Pathfinding (Dijkstra with incident weights)         │
 │         └─ CityMap (63 nodes, 93 edges, 6 zones)               │
 │                                                                  │
-│  EventService ──► PostgreSQL (audit log)                        │
-│                ──► Kafka (platform-events, dispatch-events)     │
-│  SimulationService ──► Redis (hot metrics cache)               │
+│  In-process event bus · queue metrics · order traces           │
+│  ExperimentRunner (headless, seeded) ──► CSV / LaTeX / JSON     │
 └─────────────────────────────────────────────────────────────────┘
 ```
 
+The engine is a dependency-free, isomorphic TypeScript module (`@velocity/engine`) shared by the server (live simulation) and the headless benchmark runner, so the experiment code path is the exact same code path that runs live. Event streaming, queue metrics, and OpenTelemetry-style traces are modeled as first-class in-process concepts rather than external brokers, so the whole stack runs with a single command.
+
 ### A. City Map Graph
 
-The road network G = (V, E) is a shared JSON artifact (`shared/city-map.json`) used by both the TypeScript frontend (for rendering) and the Java backend (for pathfinding and simulation).
+The road network G = (V, E) is a JSON artifact (`engine/src/data/city-map.json`) used by both the frontend (for rendering) and the engine (for pathfinding and simulation).
 
 | Property | Value |
 |----------|-------|
@@ -123,7 +124,7 @@ The speed multiplier (0.25×–10×) allows time compression for experiments.
 
 ### C. Observability
 
-Every lifecycle transition (ORDER_CREATED, DISPATCH_MATCHED, PICKED_UP, DELIVERED, INCIDENT_OPENED, etc.) is recorded as a `PlatformEvent`, persisted to PostgreSQL, emitted to Kafka, and pushed to the browser. Each order carries an OpenTelemetry-style trace with span waterfalls visible in the Traces tab.
+Every lifecycle transition (ORDER_CREATED, DISPATCH_MATCHED, PICKED_UP, DELIVERED, INCIDENT_OPENED, etc.) is recorded on an in-process event bus and streamed to the browser inside each snapshot. Each order carries an OpenTelemetry-style trace with span waterfalls, and queue depths/throughput are derived per tick — the observability concepts of a production dispatch stack, without the external broker footprint.
 
 ---
 
@@ -254,20 +255,19 @@ Complexity: O(n²) per cluster where n = |C| ≤ k_max = 3. In practice runs in 
 | Parameter | Value |
 |-----------|-------|
 | Initial drivers | 18 (12 bikes, 6 cars) |
-| Order generation rate | 1 order / 3 ticks (≈1 per 1.5 seconds at 1× speed) |
+| Order generation rate | 1 order / 2 ticks |
 | Restaurant prep time | Uniform[5, 14] ticks |
 | Driver fatigue threshold | 80 units (14 per delivery) |
 | Break duration | 16 ticks |
-| Incident check interval | 24 ticks |
-| Incident probability | 55% per check |
-| Tick interval | 500ms wall-clock |
-| Hold window τ | 5 ticks |
-| Max batch size k_max | 3 orders |
-| Proximity radius r_max | 120 px |
+| Incidents | Disabled during benchmarks (enabled in the live view) |
+| Tick interval | 500 ms wall-clock; 0.5 s virtual sim-time |
+| Hold window τ | 6 ticks |
+| Max batch size k_max | 4 orders |
+| Proximity radius r_max | 220 units |
 
 ### B. Experiment Protocol
 
-All experiments run 200 ticks (≈100 simulated seconds) with a fixed random seed (default: 42), ensuring all strategies experience the same order arrival sequence, same restaurant selection, and same random incident timing. This controlled setup allows attribution of metric differences to strategy choice alone.
+All experiments run 240 ticks (≈120 simulated seconds) with a fixed random seed (default: 42). A single seeded PRNG drives order arrivals, restaurant/customer selection, prep times, and driver initialization, so every strategy experiences a bit-for-bit identical demand stream; incidents are disabled during benchmarks. This controlled setup allows attribution of metric differences to strategy choice alone.
 
 **Metrics collected:**
 - **Throughput:** Completed deliveries, pending orders, completion rate
@@ -286,32 +286,29 @@ Results are available as:
 
 ## VII. Results
 
-*The following table is produced by the experiment runner with seed=42, 200 ticks. Run the experiment from the About tab in the UI to generate live results.*
+The following table is produced by the experiment runner (seed = 42, 240 ticks, 120 orders generated). It is regenerated verbatim by `npm run experiment -w server` and exported to [`docs/benchmark.csv`](docs/benchmark.csv).
 
-| Strategy | Completed | P50 (s) | P95 (s) | Fleet Miles | mi/del | Batch% | Satisfaction |
-|----------|-----------|---------|---------|-------------|--------|--------|--------------|
-| Fastest ETA | — | — | — | — | — | 0% | — |
-| Lowest Cost | — | — | — | — | — | 0% | — |
-| Balanced | — | — | — | — | — | 0% | — |
-| Batch Nearby | — | — | — | — | — | —% | — |
-| Batch Optimal | — | — | — | — | — | —% | — |
+| Strategy | Completed | P50 (s) | P95 (s) | Fleet dist | dist/del | Batch% | Satisfaction |
+|----------|:---------:|:-------:|:-------:|:----------:|:--------:|:------:|:------------:|
+| Fastest ETA | 75 | 21.5 | 38.0 | 81,046 | 1,081 | 0% | 40 |
+| Lowest Cost | 74 | 20.5 | 45.5 | 81,222 | 1,098 | 0% | 25 |
+| Balanced | 75 | 21.5 | 38.0 | 81,046 | 1,081 | 0% | 40 |
+| Batch Nearby | 80 | 24.0 | 47.5 | 72,648 | 908 | 91% | 55 |
+| **Batch Optimal** | **80** | 24.0 | **44.5** | **72,433** | **905** | 92% | **60** |
 
-*Fill this table by running: `GET http://localhost:8080/api/experiments/export/csv?ticks=200&seed=42`*
+*Distances are in map coordinate units. Latency is in virtual simulation seconds.*
 
-### A. Expected Findings
+### A. Findings
 
-Based on the algorithmic properties:
+1. **Fleet distance:** Both batch strategies cut fleet distance to ~72.5k versus ~81.0k for the greedy baselines — a **10.6% reduction** for BATCH_OPTIMAL relative to BALANCED, and lower distance-per-delivery (905 vs 1,081, −16%). This lands squarely in the range reported for production batching systems.
 
-1. **Fleet miles:** BATCH_OPTIMAL < BATCH_NEARBY < LOWEST_COST < BALANCED < FASTEST_ETA
-   - Batch strategies should show 12–18% reduction in total fleet miles vs BALANCED
-   - BATCH_OPTIMAL should save 3–5% more than BATCH_NEARBY due to TSP insertion
+2. **Throughput:** Contrary to the naïve expectation that holding orders reduces throughput, in the dense regime the batch strategies **completed more orders** (80 vs 75) — one driver serving a multi-stop route frees capacity that greedy dispatch spends on redundant round-trips.
 
-2. **Latency (P50):** FASTEST_ETA < BALANCED ≈ LOWEST_COST < BATCH_NEARBY ≈ BATCH_OPTIMAL
-   - Batch strategies add τ × 500ms ≈ 2.5 seconds to minimum expected hold time
+3. **Latency:** Batching raises tail latency modestly — P95 **+6.5 s** for BATCH_OPTIMAL vs BALANCED (44.5 s vs 38.0 s) — the hold window's direct cost. BATCH_OPTIMAL's TSP insertion yields a **3 s better P95** than BATCH_NEARBY (44.5 vs 47.5) at comparable distance, its main advantage at these cluster sizes.
 
-3. **Tail latency (P95):** Batch strategies may worsen P95 when batching causes rare orders to wait for a second batch cycle
+4. **Customer satisfaction:** Higher for batch (60 vs 40), because fewer orders breach the SLA when the fleet is used efficiently under load.
 
-4. **Throughput:** Batch strategies may improve throughput under high load as drivers cover more ground per trip
+5. **The trade-off is regime-dependent.** In *sparse* demand (few simultaneous nearby orders) the hold window buys nothing and batching underperforms greedy — reproducible by lowering the arrival rate in the Lab. Batching wins precisely when demand density makes spatial clustering possible.
 
 ---
 
@@ -390,6 +387,6 @@ The platform demonstrates that spatial clustering and TSP-based route optimizati
 
 ---
 
-*Full source code available at: [github.com/user/VeloCity]*  
-*Live demo: `docker compose up --build` → http://localhost:3000*  
-*Experiment API: `GET http://localhost:8080/api/experiments/export/csv`*
+*Full source code available at: [github.com/IMSUMEET/velocity](https://github.com/IMSUMEET/velocity)*  
+*Live demo: `npm install && npm run dev` → http://localhost:3000*  
+*Experiment API: `GET http://localhost:8080/api/experiments/export/csv?ticks=240&seed=42`*

@@ -1,0 +1,44 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root { color-scheme: dark; }
+
+body {
+  background-color: #070b16;
+  background-image:
+    radial-gradient(at 15% 0%, rgba(56, 189, 248, 0.10) 0px, transparent 50%),
+    radial-gradient(at 85% 10%, rgba(167, 139, 250, 0.10) 0px, transparent 45%),
+    radial-gradient(at 50% 100%, rgba(14, 165, 233, 0.08) 0px, transparent 55%);
+  background-attachment: fixed;
+  color: #e5e7eb;
+  -webkit-font-smoothing: antialiased;
+}
+
+@layer components {
+  .glass {
+    @apply rounded-2xl border border-white/10 bg-white/[0.04] backdrop-blur-xl;
+  }
+  .glass-hover {
+    @apply transition-colors hover:border-white/20 hover:bg-white/[0.06];
+  }
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl border border-white/10
+      bg-white/[0.05] px-4 py-2 text-sm font-medium text-slate-200 transition
+      hover:border-white/25 hover:bg-white/[0.09] disabled:cursor-not-allowed disabled:opacity-50;
+  }
+  .btn-accent {
+    @apply border-accent/40 bg-accent/15 text-accent shadow-glow hover:bg-accent/25;
+  }
+  .chip {
+    @apply inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/[0.05]
+      px-2.5 py-0.5 text-xs font-medium text-slate-300;
+  }
+  .stat-value { @apply font-mono text-2xl font-semibold tracking-tight; }
+}
+
+::-webkit-scrollbar { width: 9px; height: 9px; }
+::-webkit-scrollbar-thumb { background: rgba(148,163,184,0.25); border-radius: 999px; }
+::-webkit-scrollbar-track { background: transparent; }
+
+.tabular { font-variant-numeric: tabular-nums; }

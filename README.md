@@ -1,195 +1,205 @@
-# VeloCity
+<div align="center">
 
-**Real-Time Delivery Marketplace Simulation & Control Plane**
+# ⚡ VeloCity — Dispatch Strategy Lab
 
-VeloCity is a full-stack prototype that simulates a city-scale delivery marketplace. A Spring Boot backend runs the authoritative simulation engine, while a React admin UI provides real-time observability and operator controls across 9 specialized dashboard tabs.
+### Which dispatch strategy wins the cost-vs-speed trade-off in last-mile delivery?
 
-## Preview
+VeloCity answers that question with **reproducible, seeded experiments** — and lets you
+**watch why** on a live city map. It benchmarks five dispatch strategies (three greedy,
+two order-batching) on an identical demand stream, calls the winner, and exports
+publication-ready results. Under the hood: a dependency-free TypeScript simulation
+engine (Dijkstra routing, spatial batching, greedy-TSP insertion) served live over
+WebSocket to a dark **glass control-room** UI.
 
-<p align="center">
-  <img src="docs/screenshots/dashboard.gif" alt="VeloCity live control plane" width="900" />
-</p>
+<br/>
 
-<p align="center">
-  <a href="docs/screenshots/dashboard.mp4">Watch the dashboard walkthrough (MP4)</a>
-</p>
+![VeloCity walkthrough](docs/media/walkthrough.gif)
 
-<p align="center">
-  <img src="docs/screenshots/marketplace.png" alt="Marketplace tab with live city map and KPIs" width="900" />
-</p>
+<br/>
 
-| Orders | Drivers |
-|:---:|:---:|
-| <img src="docs/screenshots/orders.png" alt="Orders tab" width="440" /> | <img src="docs/screenshots/drivers.png" alt="Drivers tab" width="440" /> |
+![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6?logo=typescript&logoColor=white)
+![Next.js](https://img.shields.io/badge/Next.js-14-000000?logo=next.js&logoColor=white)
+![Node](https://img.shields.io/badge/Node-Fastify_+_ws-000000?logo=fastify&logoColor=white)
+![Recharts](https://img.shields.io/badge/Recharts-viz-22b5bf)
+![License](https://img.shields.io/badge/License-MIT-38bdf8)
 
-| Dispatch Engine | Analytics |
-|:---:|:---:|
-| <img src="docs/screenshots/dispatch.png" alt="Dispatch Engine tab" width="440" /> | <img src="docs/screenshots/analytics.png" alt="Analytics tab" width="440" /> |
+<sub>▶ Prefer video? Watch the <a href="docs/media/walkthrough.mp4">full walkthrough (MP4)</a>. Runs with one command — no Docker, no Kafka, no database.</sub>
 
-## Quick Start
+</div>
+
+---
+
+## 🎯 The verdict
+
+Running all five strategies on an identical, seeded order stream (240 ticks, seed 42,
+dense-demand regime):
+
+> **Batch Optimal: −10.6% fleet distance for +6.5 s P95 vs Balanced** — while completing
+> *more* orders (80 vs 75) and lifting customer satisfaction (60 vs 40).
+
+Batching holds spatially-proximal orders for a few ticks and serves them on one
+multi-stop route. It trades a small latency increase for a real cut in fleet distance —
+**when demand is dense enough to cluster**. In sparse demand the trade-off flips, which
+you can reproduce live by lowering the arrival rate.
+
+| Strategy | Completed | P50 (s) | P95 (s) | Fleet dist | dist/del | Batch% | Satisfaction |
+|----------|:---------:|:-------:|:-------:|:----------:|:--------:|:------:|:------------:|
+| Fastest ETA | 75 | 21.5 | 38.0 | 81,046 | 1,081 | 0% | 40 |
+| Lowest Cost | 74 | 20.5 | 45.5 | 81,222 | 1,098 | 0% | 25 |
+| Balanced | 75 | 21.5 | 38.0 | 81,046 | 1,081 | 0% | 40 |
+| Batch Nearby | 80 | 24.0 | 47.5 | 72,648 | 908 | 91% | 55 |
+| **Batch Optimal** ⭐ | **80** | 24.0 | **44.5** | **72,433** | **905** | 92% | **60** |
+
+<sub>Reproduce verbatim: <code>npm run experiment -w server -- --ticks 240 --seed 42</code> · raw output in <a href="docs/benchmark.csv">docs/benchmark.csv</a></sub>
+
+---
+
+## 🖥️ Inside the control room
+
+<table>
+  <tr>
+    <td width="50%"><img src="docs/media/shot_lab.png" alt="Strategy Lab" /><p align="center"><sub><b>Lab</b> — verdict, efficiency-latency Pareto chart & results</sub></p></td>
+    <td width="50%"><img src="docs/media/shot_operations.png" alt="Operations" /><p align="center"><sub><b>Operations</b> — live city map, KPIs, strategy & speed controls</sub></p></td>
+  </tr>
+  <tr>
+    <td width="50%"><img src="docs/media/shot_fleet.png" alt="Fleet & Orders" /><p align="center"><sub><b>Fleet & Orders</b> — drivers, live orders, dispatch decisions</sub></p></td>
+    <td width="50%"><img src="docs/media/shot_method.png" alt="Method" /><p align="center"><sub><b>Method</b> — the problem, strategies & experiment design</sub></p></td>
+  </tr>
+</table>
+
+---
+
+## 🧠 How it works
+
+1. **Authoritative simulation.** A single `SimulationEngine` owns all state — drivers,
+   orders, incidents, traces. One `tick()` advances the world: generate orders, run
+   dispatch, move drivers along Dijkstra routes, update SLAs, decay incidents.
+
+2. **Five dispatch strategies.** Three greedy scorers (Fastest ETA, Lowest Cost, Balanced)
+   assign each order to the best idle driver. Two batch strategies hold proximal orders in
+   a queue, cluster them by restaurant proximity, and build a multi-stop route —
+   **Batch Nearby** via nearest-neighbour, **Batch Optimal** via greedy cheapest-insertion TSP.
+
+3. **Live view = the same engine.** The server runs the engine on a 500 ms loop and
+   broadcasts a full snapshot over WebSocket each tick; the Next.js UI is a pure view layer.
+
+4. **The Lab = the same engine, headless.** The benchmark spins up isolated, seeded engine
+   instances and runs them as fast as the CPU allows — identical code path, reproducible results.
+
+### Built for reproducibility
+
+Two design choices make the benchmark trustworthy (and fix subtle traps in naïve simulators):
+
+- **One seeded PRNG drives everything** — order arrivals, restaurant/customer choice, prep
+  times, driver init. Same seed ⇒ bit-for-bit identical run, so metric differences are
+  attributable to the dispatch policy alone.
+- **Virtual tick-time, not wall-clock** — latency is measured in simulation ticks, so a
+  headless run that finishes in milliseconds still yields meaningful, comparable P50/P95.
+
+---
+
+## 🏗️ Architecture
+
+```
+┌──────────────────────────┐    /api/*  (REST)     ┌───────────────────────────┐
+│      Next.js 14 (web)    │ ────────────────────▶ │   Fastify + ws (server)   │
+│  Lab · Operations ·      │                       │                           │
+│  Fleet · Method          │ ◀──── /ws snapshot ── │   LiveSim (500ms loop)    │
+│  Zustand · Recharts ·    │      (per tick)       │     └ @velocity/engine     │
+│  framer-motion           │                       │        · Dijkstra          │
+└──────────────────────────┘                       │        · 5 strategies      │
+                                                    │        · batching / TSP    │
+┌──────────────────────────┐   import (isomorphic) │        · event bus/traces  │
+│   @velocity/engine (TS)  │ ◀──────────────────── │   ExperimentRunner ──▶ CSV │
+│   pure, no deps          │                       │                    LaTeX   │
+└──────────────────────────┘                       └───────────────────────────┘
+```
+
+The engine is a **dependency-free, isomorphic** TypeScript package shared by the server and
+the browser. No Kafka/Redis/Postgres/Docker — event streaming, queue metrics and traces are
+modeled as first-class in-process concepts, so the whole thing runs with one command.
+
+---
+
+## 🚀 Quick start
+
+**Prerequisites:** Node.js 18+.
 
 ```bash
-docker compose up --build
+npm install          # installs all three workspaces
+npm run dev          # starts the server (:8080) and web (:3000) together
 ```
 
-Open http://localhost:3000 to see the control plane. The simulation starts automatically.
+Open **http://localhost:3000** — the Lab auto-runs a benchmark; Operations shows the live sim.
 
-## Architecture
+Run the headless benchmark on its own:
 
-```
-Browser (React Admin UI)                    Spring Boot Backend
-┌──────────────────────────┐   REST/WS    ┌────────────────────────────────┐
-│  AdminShell (9 tabs)     │◄────────────►│  SimulationService (tick loop) │
-│  ├─ Marketplace (map+KPI)│              │  ├─ SimulationEngine (state)   │
-│  ├─ Orders               │              │  ├─ DispatchEngine (3 strat.)  │
-│  ├─ Drivers              │  /topic/     │  ├─ Pathfinding (Dijkstra)     │
-│  ├─ Restaurants          │  snapshot    │  ├─ CityMap (graph + weights)  │
-│  ├─ Dispatch             │◄────────────│  ├─ EventService               │
-│  ├─ Events & Queues      │              │  └─ QueueMetricsService        │
-│  ├─ Incidents            │              └────────┬───────────────────────┘
-│  ├─ Traces               │                       │
-│  └─ Analytics            │              ┌────────┴───────────────────────┐
-│                          │              │  Infrastructure                │
-│  platformStore (Zustand) │              │  ├─ PostgreSQL (event audit)   │
-│  api.ts (REST client)    │              │  ├─ Redis (metrics cache)      │
-│  useWebSocket (STOMP)    │              │  └─ Kafka (event backbone)     │
-└──────────────────────────┘              └────────────────────────────────┘
-```
-
-### How it works
-
-1. The **backend simulation engine** holds all state in memory: drivers, orders, incidents, traces, and dispatch attempts. A `@Scheduled` tick loop (500ms default) advances driver movement along a graph-based road network using Dijkstra pathfinding.
-
-2. Every tick, the engine generates orders, runs multi-strategy dispatch (BALANCED / FASTEST_ETA / LOWEST_COST), spawns incidents, and computes metrics. A full-state **snapshot** is broadcast over STOMP WebSocket to all connected browsers.
-
-3. The **React frontend** does not run its own simulation. It subscribes to `/topic/snapshot` and renders the server state. Operator actions (deploy driver, reassign order, mitigate incident) call REST endpoints that mutate the engine synchronously.
-
-4. Platform events are persisted to **PostgreSQL** (durable audit log), streamed to **Kafka** (event backbone), and cached in **Redis** (hot metrics).
-
-## Tech Stack
-
-| Layer | Technology |
-|-------|-----------|
-| Frontend | React 18, TypeScript, Vite, Tailwind CSS, Zustand, Recharts, STOMP/SockJS |
-| Backend | Java 21, Spring Boot 3.2, Spring WebSocket, Spring Data JPA |
-| Database | PostgreSQL 16 |
-| Cache | Redis 7 |
-| Messaging | Apache Kafka |
-| Containerization | Docker, Docker Compose |
-
-## Admin Control Plane (9 Tabs)
-
-| Tab | Description |
-|-----|-------------|
-| **Marketplace** | KPI grid, network health, live SVG map with driver/building selection, speed/fleet controls |
-| **Orders** | Sortable/filterable order table, status badges, reassign/cancel/boost priority actions |
-| **Drivers** | Fleet table with status, fatigue bars, rating, relocate/offline/online controls |
-| **Restaurants** | Prep backlog per restaurant, active orders, delay incident indicators |
-| **Dispatch** | Strategy selector, dispatch attempt list, candidate ranking waterfall with score breakdown |
-| **Events & Queues** | Live event feed with severity colors, queue depth/worker/health metrics |
-| **Incidents** | SEV-1/2/3 incident cards, mitigate/resolve buttons, zone/edge/driver info |
-| **Traces** | Order picker with span waterfall visualization showing full lifecycle |
-| **Analytics** | Time-series charts (throughput, P50/P95 latency, backlog) via Recharts |
-
-## API Overview
-
-| Group | Key Endpoints |
-|-------|--------------|
-| Simulation | `POST /api/simulation/start\|pause\|resume\|reset\|speed`, `GET /state\|snapshot` |
-| Orders | `GET /api/orders`, `POST /{id}/reassign\|cancel\|priority` |
-| Drivers | `GET /api/drivers`, `POST /deploy\|/{id}/force-offline\|bring-online\|relocate` |
-| Dispatch | `GET /api/dispatch/attempts`, `PUT /strategy`, `GET /strategies` |
-| Events | `GET /api/events?category=&limit=` |
-| Queues | `GET /api/queues` |
-| Incidents | `GET /api/incidents`, `POST /{id}/mitigate\|resolve` |
-| Traces | `GET /api/traces/{orderId}` |
-| Analytics | `GET /api/analytics/metrics` |
-| Map | `GET /api/map` |
-| Admin | `POST /api/admin/rush-delayed\|recalculate-routes` |
-
-## WebSocket
-
-Connect via STOMP to `/ws`. Primary topic:
-
-| Topic | Payload | Frequency |
-|-------|---------|-----------|
-| `/topic/snapshot` | Full simulation state (drivers, orders, metrics, incidents, events, zones, queues) | Every tick (~500ms) |
-| `/topic/simulation` | Simulation control state (running, paused, speed) | On change |
-| `/topic/events` | Individual platform events | On emission |
-
-## Local Development (without Docker)
-
-**Backend** (requires Postgres, or will fail on startup):
 ```bash
-cd backend
-mvn spring-boot:run
+npm run experiment -w server -- --ticks 240 --seed 42 --out docs
 ```
 
-**Frontend** (connects to backend at localhost:8080):
-```bash
-cd frontend
-npm install
-npm run dev
-```
+---
 
-Keyboard shortcuts: `Space` = pause/resume, `1-4` = speed, `Escape` = deselect.
-
-## Environment Variables
-
-**Backend:**
-
-| Variable | Default | Description |
-|----------|---------|-------------|
-| `SPRING_DATASOURCE_URL` | `jdbc:postgresql://localhost:5432/velocity` | PostgreSQL |
-| `SPRING_DATA_REDIS_HOST` | `localhost` | Redis host |
-| `SPRING_KAFKA_BOOTSTRAP_SERVERS` | `localhost:9092` | Kafka brokers |
-| `VELOCITY_SIMULATION_TICK_INTERVAL_MS` | `500` | Tick rate |
-
-**Frontend:**
-
-| Variable | Default | Description |
-|----------|---------|-------------|
-| `VITE_API_URL` | `http://localhost:8080` | Backend REST URL |
-| `VITE_WS_URL` | `ws://localhost:8080/ws` | WebSocket URL |
-
-## Kafka Topics
-
-| Topic | Description |
-|-------|-------------|
-| `platform-events` | All lifecycle events (orders, drivers, incidents) |
-| `dispatch-assignment-events` | Dispatch matching decisions |
-| `delivery-status-events` | Order status transitions |
-| `simulation-tick` | Tick-level simulation state snapshots |
-
-## Project Structure
+## 🗂️ Project structure
 
 ```
-VeloCity/
-├── frontend/
+velocity/
+├── engine/                # @velocity/engine — pure, isomorphic TS simulation
 │   └── src/
-│       ├── components/Admin/     # AdminShell, Sidebar, 9 tab components
-│       ├── components/Map/       # CityMapSVG, Roads, Vehicles, Zones
-│       ├── services/api.ts       # Typed REST client
-│       ├── hooks/useWebSocket.ts # STOMP subscription
-│       ├── store/platformStore.ts # Server-synced Zustand store
-│       ├── data/cityMap.ts       # Road network graph data
-│       └── types/index.ts        # Shared TypeScript types
-├── backend/
-│   └── src/main/java/com/velocity/
-│       ├── engine/               # SimulationEngine, DispatchEngine
-│       ├── map/                  # CityMap, Pathfinding, MapModels
-│       ├── model/                # In-memory POJOs, enums, Snapshot
-│       ├── entity/               # PlatformEvent (JPA)
-│       ├── service/              # SimulationService, EventService, QueueMetrics
-│       ├── controller/           # REST controllers (11 endpoints groups)
-│       ├── config/               # WebSocket, Kafka, Redis, CORS, Scheduler
-│       └── kafka/                # KafkaProducer/Consumer
-├── shared/city-map.json          # Canonical city graph (generated)
-├── docs/screenshots/             # Dashboard GIF, MP4, and tab screenshots
-├── docker-compose.yml            # Full stack orchestration
+│       ├── engine.ts      # SimulationEngine (tick loop, seeded, tick-time)
+│       ├── dispatch.ts    # 5 strategies · clustering · greedy-TSP insertion
+│       ├── pathfinding.ts # Dijkstra over the road graph
+│       ├── experiment.ts  # headless seeded runner + CSV/LaTeX export
+│       ├── cityMap.ts     # graph loader + lookups
+│       └── data/city-map.json  # 63 nodes · 93 edges · 6 zones
+├── server/                # Fastify REST + WebSocket + live tick loop + experiment CLI
+├── web/                   # Next.js dark glass control-room (Lab, Operations, Fleet, Method)
+├── docs/                  # media, benchmark.csv/json/tex
+├── PAPER.md               # full problem formulation, method & results
 └── README.md
 ```
 
-## License
+---
 
-MIT
+## 🔌 API
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| `GET` | `/api/snapshot` | Full live simulation state |
+| `POST` | `/api/simulation/pause \| resume \| reset` | Control the live sim |
+| `PUT` | `/api/simulation/speed` · `/api/dispatch/strategy` | Set speed / strategy |
+| `POST` | `/api/experiments/compare` | Run all 5 strategies → results + verdict |
+| `GET` | `/api/experiments/export/csv \| latex` | Export benchmark tables |
+| `WS` | `/ws` | Snapshot stream, one message per tick |
+
+---
+
+## 🧪 Tests
+
+```bash
+npm test    # engine: determinism, pathfinding, reproducible benchmarks
+```
+
+The suite asserts that identical seeds produce identical runs — the property the whole
+benchmark rests on.
+
+---
+
+## 🛠️ Tech stack
+
+**Engine** · TypeScript (zero runtime deps) · Dijkstra · greedy-TSP insertion
+**Server** · Node · Fastify · ws · tsx
+**Web** · Next.js 14 · TypeScript · Tailwind CSS · Zustand · Recharts · Framer Motion
+**Tooling** · npm workspaces · Vitest · Playwright (media)
+
+---
+
+## 📄 Research
+
+The full problem formulation (the Dynamic Batching Vehicle Dispatch Problem), related work,
+method and results are in **[PAPER.md](PAPER.md)** — its results table is generated by this
+exact engine.
+
+---
+
+<div align="center"><sub>MIT licensed. A study of online order batching in last-mile delivery, built to be run and reproduced.</sub></div>

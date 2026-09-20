@@ -1,0 +1,6 @@
+strategy,totalOrders,completed,completionRate,p50,p95,p99,avgDeliverySec,totalFleetMiles,milesPerDelivery,driverUtilization,batchedOrders,avgBatchSize,holdTimeAvgSec,batchSavingsPercent,customerSatisfaction,revenue
+FASTEST_ETA,120,75,62.5,21.5,38,47.5,22.6,81046.4,1080.62,94.4,0,0,0,0,40,2398.86
+LOWEST_COST,120,74,61.7,20.5,45.5,54,23.7,81221.5,1097.59,94.4,0,0,0,0,25,2360.44
+BALANCED,120,75,62.5,21.5,38,47.5,22.6,81046.4,1080.62,94.4,0,0,0,0,40,2398.86
+BATCH_NEARBY,120,80,66.7,24,47.5,71,26.4,72648.1,908.1,88.9,109,1.6,2.7,8.3,55,2612.88
+BATCH_OPTIMAL,120,80,66.7,24,44.5,56.5,26,72433.3,905.42,94.4,110,1.5,2.6,8.3,60,2612.88
