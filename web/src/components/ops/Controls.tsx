@@ -11,21 +11,21 @@ export default function Controls() {
   const speeds = [0.5, 1, 2, 4];
 
   return (
-    <div className="glass space-y-4 p-4">
+    <div className="card space-y-4 p-4">
       <div>
-        <p className="mb-2 text-xs uppercase tracking-wide text-slate-500">Dispatch strategy</p>
+        <p className="mb-2 text-xs font-medium uppercase tracking-wide text-ink-faint">Dispatch strategy</p>
         <div className="grid grid-cols-1 gap-1.5">
           {STRATEGIES.map((s) => {
             const active = snap.strategy === s;
             return (
               <button key={s} onClick={() => api.setStrategy(s)}
                 className={`flex items-center justify-between rounded-lg border px-3 py-2 text-left text-sm transition ${
-                  active ? "border-white/25 bg-white/10" : "border-white/5 bg-white/[0.02] hover:bg-white/[0.05]"}`}>
-                <span className="flex items-center gap-2">
+                  active ? "border-accent/40 bg-accent/10 text-ink" : "border-line bg-inset text-ink-soft hover:bg-line/50"}`}>
+                <span className="flex items-center gap-2 font-medium">
                   <span className="h-2.5 w-2.5 rounded-full" style={{ background: strategyColor[s] }} />
                   {STRATEGY_META[s].label}
                 </span>
-                <span className={`chip !py-0 text-[10px] ${isBatch(s) ? "text-batch" : "text-slate-400"}`}>
+                <span className={`chip !py-0 text-[10px] ${isBatch(s) ? "!text-batch" : ""}`}>
                   {isBatch(s) ? "batch" : "greedy"}
                 </span>
               </button>
@@ -35,7 +35,7 @@ export default function Controls() {
       </div>
 
       <div>
-        <p className="mb-2 text-xs uppercase tracking-wide text-slate-500">Speed</p>
+        <p className="mb-2 text-xs font-medium uppercase tracking-wide text-ink-faint">Speed</p>
         <div className="flex gap-1.5">
           {speeds.map((sp) => (
             <button key={sp} onClick={() => api.setSpeed(sp)}

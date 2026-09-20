@@ -10,80 +10,71 @@ const params = [
 ];
 
 const rigor = [
-  {
-    title: "One seeded PRNG drives everything",
-    body: "Order arrivals, restaurant/customer selection, prep times and driver init all draw from a single seeded generator — so every strategy sees the identical demand stream and a run reproduces bit-for-bit.",
-  },
-  {
-    title: "Virtual tick-time, not wall-clock",
-    body: "Latency is measured in simulation ticks, not milliseconds. Headless benchmarks that run in a fraction of a second still produce meaningful, comparable P50/P95 numbers.",
-  },
-  {
-    title: "Incidents off during benchmarks",
-    body: "The head-to-head comparison disables random incidents so differences are attributable to the dispatch policy alone. The live Operations view keeps incidents on for realism.",
-  },
+  { title: "One seeded PRNG drives everything", body: "Order arrivals, restaurant/customer selection, prep times and driver init all draw from a single seeded generator — so every strategy sees the identical demand stream and a run reproduces bit-for-bit." },
+  { title: "Virtual tick-time, not wall-clock", body: "Latency is measured in simulation ticks, not milliseconds. Headless benchmarks that run in a fraction of a second still produce meaningful, comparable P50/P95 numbers." },
+  { title: "Incidents off during benchmarks", body: "The head-to-head comparison disables random incidents so differences are attributable to the dispatch policy alone. The live Operations view keeps incidents on for realism." },
 ];
 
 export default function MethodPage() {
   return (
     <div className="mx-auto max-w-4xl space-y-6">
-      <section className="glass p-6 md:p-8">
+      <section className="card p-6 md:p-8">
         <span className="chip mb-3">Method</span>
-        <h1 className="text-3xl font-bold tracking-tight">The Dynamic Batching Dispatch Problem</h1>
-        <p className="mt-3 text-slate-400">
+        <h1 className="text-3xl font-bold tracking-tight text-ink">The Dynamic Batching Dispatch Problem</h1>
+        <p className="mt-3 text-ink-soft">
           On-demand delivery platforms must decide, every second, which driver serves which order — and
-          whether to <span className="text-slate-200">hold nearby orders briefly and batch them</span> onto one
+          whether to <span className="font-medium text-ink">hold nearby orders briefly and batch them</span> onto one
           multi-stop trip. Greedy dispatch minimises each order&apos;s wait; batching minimises total fleet
           distance. VeloCity quantifies that trade-off on a controlled, reproducible testbed.
         </p>
       </section>
 
-      <section className="glass p-6">
-        <h2 className="mb-4 text-lg font-semibold">Five dispatch strategies</h2>
+      <section className="card p-6">
+        <h2 className="mb-4 text-lg font-semibold text-ink">Five dispatch strategies</h2>
         <div className="grid gap-3 sm:grid-cols-2">
           {STRATEGIES.map((s) => (
-            <div key={s} className="rounded-xl border border-white/10 bg-white/[0.02] p-4">
+            <div key={s} className="rounded-xl border border-line bg-inset p-4">
               <div className="flex items-center gap-2">
-                <span className="font-semibold">{STRATEGY_META[s].label}</span>
-                <span className={`chip !py-0 text-[10px] ${s.startsWith("BATCH") ? "text-batch" : "text-slate-400"}`}>
+                <span className="font-semibold text-ink">{STRATEGY_META[s].label}</span>
+                <span className={`chip !py-0 text-[10px] ${s.startsWith("BATCH") ? "!text-batch" : ""}`}>
                   {s.startsWith("BATCH") ? "batch" : "greedy"}
                 </span>
               </div>
-              <p className="mt-1.5 text-sm text-slate-400">{STRATEGY_META[s].blurb}</p>
+              <p className="mt-1.5 text-sm text-ink-soft">{STRATEGY_META[s].blurb}</p>
             </div>
           ))}
         </div>
       </section>
 
       <div className="grid gap-6 md:grid-cols-2">
-        <section className="glass p-6">
-          <h2 className="mb-4 text-lg font-semibold">Experiment parameters</h2>
+        <section className="card p-6">
+          <h2 className="mb-4 text-lg font-semibold text-ink">Experiment parameters</h2>
           <dl className="space-y-2 text-sm">
             {params.map(([k, v]) => (
-              <div key={k} className="flex justify-between border-b border-white/5 pb-2">
-                <dt className="text-slate-500">{k}</dt>
-                <dd className="text-right font-medium text-slate-200">{v}</dd>
+              <div key={k} className="flex justify-between border-b border-line pb-2">
+                <dt className="text-ink-faint">{k}</dt>
+                <dd className="text-right font-medium text-ink">{v}</dd>
               </div>
             ))}
           </dl>
         </section>
 
-        <section className="glass p-6">
-          <h2 className="mb-4 text-lg font-semibold">What makes it rigorous</h2>
+        <section className="card p-6">
+          <h2 className="mb-4 text-lg font-semibold text-ink">What makes it rigorous</h2>
           <div className="space-y-4">
             {rigor.map((r) => (
               <div key={r.title}>
                 <p className="text-sm font-semibold text-accent">{r.title}</p>
-                <p className="mt-1 text-sm text-slate-400">{r.body}</p>
+                <p className="mt-1 text-sm text-ink-soft">{r.body}</p>
               </div>
             ))}
           </div>
         </section>
       </div>
 
-      <section className="glass p-6 text-sm text-slate-400">
+      <section className="card p-6 text-sm text-ink-soft">
         Full formulation, related work and references are in{" "}
-        <a href="https://github.com/IMSUMEET/velocity/blob/main/PAPER.md" className="text-accent hover:underline">PAPER.md</a>.
+        <a href="https://github.com/IMSUMEET/velocity/blob/main/PAPER.md" className="font-medium text-accent hover:underline">PAPER.md</a>.
         The benchmark table there is generated by this exact engine.
       </section>
     </div>

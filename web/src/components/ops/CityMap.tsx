@@ -2,25 +2,36 @@
 
 import { useMemo } from "react";
 import { cityMapData } from "@velocity/engine";
-import type { Driver, Incident } from "@velocity/engine";
+import type { Driver } from "@velocity/engine";
 import { useStore } from "@/lib/store";
+import { statusColor } from "@/lib/ui";
 
 const nodeIndex = new Map(cityMapData.nodes.map((n) => [n.id, n]));
 
-function driverPos(d: Driver): { x: number; y: number } {
-  const cur = nodeIndex.get(d.currentNodeId);
+// viewBox computed from node bounds (+ padding) so the whole city always fits.
+const xs = cityMapData.nodes.map((n) => n.x);
+const ys = cityMapData.nodes.map((n) => n.y);
+const PAD = 58;
+const VB = {
+  x: Math.min(...xs) - PAD,
+  y: Math.min(...ys) - PAD,
+  w: Math.max(...xs) - Math.min(...xs) + PAD * 2,
+  h: Math.max(...ys) - Math.min(...ys) + PAD * 2,
+};
+
+function driverPos(d: Driver) {
   if (d.route && d.route.length > d.routeIndex + 1) {
     const a = nodeIndex.get(d.route[d.routeIndex]);
     const b = nodeIndex.get(d.route[d.routeIndex + 1]);
     if (a && b) return { x: a.x + (b.x - a.x) * d.progress, y: a.y + (b.y - a.y) * d.progress };
   }
+  const cur = nodeIndex.get(d.currentNodeId);
   return { x: cur?.x ?? 0, y: cur?.y ?? 0 };
 }
 
-const statusFill: Record<string, string> = {
-  IDLE: "#64748b", EN_ROUTE_PICKUP: "#38bdf8", WAITING_AT_RESTAURANT: "#fbbf24",
-  DELIVERING: "#a78bfa", ON_BREAK: "#f472b6", OFFLINE: "#475569",
-};
+function routePoints(route: string[]) {
+  return route.map((id) => nodeIndex.get(id)).filter(Boolean).map((n) => `${n!.x},${n!.y}`).join(" ");
+}
 
 export default function CityMap() {
   const drivers = useStore((s) => s.snapshot?.drivers) ?? [];
@@ -28,38 +39,60 @@ export default function CityMap() {
   const orders = useStore((s) => s.snapshot?.orders) ?? [];
 
   const affectedEdges = useMemo(
-    () => new Set(incidents.map((i: Incident) => i.affectedEdgeId).filter(Boolean) as string[]),
+    () => new Set(incidents.map((i) => i.affectedEdgeId).filter(Boolean) as string[]),
     [incidents]
   );
   const activeRestaurants = useMemo(
     () => new Set(orders.filter((o) => o.status !== "DELIVERED").map((o) => o.restaurantNodeId)),
     [orders]
   );
+  const activeDrivers = drivers.filter(
+    (d) => (d.status === "EN_ROUTE_PICKUP" || d.status === "DELIVERING") && d.route.length > 1
+  );
 
   return (
-    <div className="glass overflow-hidden p-2">
-      <svg viewBox="120 70 880 690" className="h-[560px] w-full">
+    <div className="card overflow-hidden p-3">
+      <div className="mb-2 flex items-center justify-between px-1">
+        <span className="chip"><span className="h-1.5 w-1.5 rounded-full bg-good animate-pulse2" /> Live city</span>
+        <span className="chip">63 nodes · 93 roads · 6 zones</span>
+      </div>
+      <svg viewBox={`${VB.x} ${VB.y} ${VB.w} ${VB.h}`} preserveAspectRatio="xMidYMid meet"
+        className="w-full" style={{ aspectRatio: `${VB.w} / ${VB.h}` }}>
+        <defs>
+          <filter id="chipShadow" x="-40%" y="-40%" width="180%" height="180%">
+            <feDropShadow dx="0" dy="1.5" stdDeviation="2" floodColor="#1b2238" floodOpacity="0.18" />
+          </filter>
+        </defs>
+
         {/* zones */}
         {cityMapData.zones.map((z) => (
           <g key={z.id}>
-            <circle cx={z.centerX} cy={z.centerY} r={z.radius} fill={z.color} opacity={0.06} />
-            <text x={z.labelX} y={z.labelY} fill={z.color} opacity={0.5} fontSize={13} fontWeight={600} textAnchor="middle">
-              {z.name}
+            <circle cx={z.centerX} cy={z.centerY} r={z.radius} fill={z.color} opacity={0.1} />
+            <text x={z.labelX} y={z.labelY} fill={z.color} fontSize={13} fontWeight={700}
+              textAnchor="middle" opacity={0.65} style={{ letterSpacing: "0.06em" }}>
+              {z.name.toUpperCase()}
             </text>
           </g>
         ))}
 
-        {/* edges */}
+        {/* roads */}
         {cityMapData.edges.map((e) => {
           const a = nodeIndex.get(e.from), b = nodeIndex.get(e.to);
           if (!a || !b) return null;
           const hit = affectedEdges.has(e.id);
           return (
             <line key={e.id} x1={a.x} y1={a.y} x2={b.x} y2={b.y}
-              stroke={hit ? "#f87171" : "#1e293b"} strokeWidth={hit ? 4 : e.isMajor ? 3 : 1.5}
-              strokeLinecap="round" opacity={hit ? 0.9 : 0.7} />
+              stroke={hit ? "#fca5a5" : "#d3dae7"} strokeWidth={hit ? 6 : e.isMajor ? 6 : 3.5}
+              strokeLinecap="round" />
           );
         })}
+
+        {/* active driver routes */}
+        {activeDrivers.map((d) => (
+          <polyline key={`r-${d.id}`} points={routePoints(d.route.slice(d.routeIndex))}
+            fill="none" stroke={statusColor[d.status]} strokeWidth={3} strokeLinecap="round"
+            strokeLinejoin="round" strokeDasharray="2 7" opacity={0.55} />
+        ))}
 
         {/* buildings */}
         {cityMapData.buildings.map((b) => {
@@ -68,14 +101,23 @@ export default function CityMap() {
           return (
             <g key={b.id}>
               {isRestaurant && active && (
-                <circle cx={b.x} cy={b.y} r={11} fill="none" stroke="#38bdf8" strokeWidth={1.5} opacity={0.6}>
-                  <animate attributeName="r" values="8;15;8" dur="2s" repeatCount="indefinite" />
-                  <animate attributeName="opacity" values="0.6;0;0.6" dur="2s" repeatCount="indefinite" />
+                <circle cx={b.x} cy={b.y} r={16} fill="none" stroke="#2563eb" strokeWidth={2} opacity={0.5}>
+                  <animate attributeName="r" values="15;22;15" dur="2s" repeatCount="indefinite" />
+                  <animate attributeName="opacity" values="0.5;0;0.5" dur="2s" repeatCount="indefinite" />
                 </circle>
               )}
-              <text x={b.x} y={b.y + 4} fontSize={isRestaurant ? 13 : 10} textAnchor="middle" opacity={isRestaurant ? 1 : 0.5}>
+              <circle cx={b.x} cy={b.y} r={isRestaurant ? 15 : 12} fill="#ffffff"
+                stroke={isRestaurant ? "#f97316" : "#cbd5e1"} strokeWidth={isRestaurant ? 2 : 1.5}
+                filter="url(#chipShadow)" />
+              <text x={b.x} y={b.y + (isRestaurant ? 5 : 4)} fontSize={isRestaurant ? 15 : 12} textAnchor="middle">
                 {b.icon}
               </text>
+              {isRestaurant && (
+                <text x={b.x} y={b.y + 30} fontSize={9.5} fontWeight={600} textAnchor="middle"
+                  fill="#586179" stroke="#fff" strokeWidth={3} paintOrder="stroke" style={{ paintOrder: "stroke" }}>
+                  {b.name}
+                </text>
+              )}
             </g>
           );
         })}
@@ -83,18 +125,17 @@ export default function CityMap() {
         {/* drivers */}
         {drivers.map((d) => {
           const p = driverPos(d);
-          const fill = statusFill[d.status] ?? "#64748b";
-          const car = d.vehicleType === "CAR";
+          const ring = statusColor[d.status] ?? "#94a3b8";
+          const active = d.status === "EN_ROUTE_PICKUP" || d.status === "DELIVERING";
           return (
             <g key={d.id} transform={`translate(${p.x} ${p.y})`}>
-              {(d.status === "DELIVERING" || d.status === "EN_ROUTE_PICKUP") && (
-                <circle r={9} fill={fill} opacity={0.25}>
-                  <animate attributeName="r" values="6;12;6" dur="1.4s" repeatCount="indefinite" />
+              {active && (
+                <circle r={14} fill={ring} opacity={0.18}>
+                  <animate attributeName="r" values="11;18;11" dur="1.4s" repeatCount="indefinite" />
                 </circle>
               )}
-              {car
-                ? <rect x={-4} y={-4} width={8} height={8} rx={2} fill={fill} stroke="#0a0f1f" strokeWidth={1} />
-                : <circle r={4.5} fill={fill} stroke="#0a0f1f" strokeWidth={1} />}
+              <circle r={12} fill="#ffffff" stroke={ring} strokeWidth={2.5} filter="url(#chipShadow)" />
+              <text y={4.5} fontSize={13} textAnchor="middle">{d.vehicleType === "CAR" ? "🚗" : "🚲"}</text>
             </g>
           );
         })}

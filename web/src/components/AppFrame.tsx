@@ -21,20 +21,16 @@ export default function AppFrame({ children }: { children: React.ReactNode }) {
 
   return (
     <div className="mx-auto min-h-screen max-w-[1400px] px-4 pb-16 md:px-6">
-      <header className="sticky top-0 z-30 -mx-4 mb-6 border-b border-white/5 bg-ink-950/70 px-4 py-3 backdrop-blur-xl md:-mx-6 md:px-6">
+      <header className="sticky top-0 z-30 -mx-4 mb-6 border-b border-line bg-canvas/80 px-4 py-3 backdrop-blur-md md:-mx-6 md:px-6">
         <div className="flex items-center justify-between gap-4">
           <Link href="/"><Brand /></Link>
-          <nav className="hidden rounded-full border border-white/10 bg-white/[0.03] p-1 md:flex">
+          <nav className="hidden rounded-full border border-line bg-surface p-1 shadow-card md:flex">
             {tabs.map((t) => {
               const active = t.href === "/" ? pathname === "/" : pathname.startsWith(t.href);
               return (
-                <Link
-                  key={t.href}
-                  href={t.href}
+                <Link key={t.href} href={t.href}
                   className={`rounded-full px-4 py-1.5 text-sm font-medium transition ${
-                    active ? "bg-white/10 text-white shadow-glow" : "text-slate-400 hover:text-white"
-                  }`}
-                >
+                    active ? "bg-accent text-white shadow-card" : "text-ink-soft hover:text-ink"}`}>
                   {t.label}
                 </Link>
               );
@@ -49,7 +45,8 @@ export default function AppFrame({ children }: { children: React.ReactNode }) {
           {tabs.map((t) => {
             const active = t.href === "/" ? pathname === "/" : pathname.startsWith(t.href);
             return (
-              <Link key={t.href} href={t.href} className={`whitespace-nowrap rounded-full px-3 py-1.5 text-sm ${active ? "bg-accent/20 text-accent" : "bg-white/5 text-slate-400"}`}>
+              <Link key={t.href} href={t.href}
+                className={`whitespace-nowrap rounded-full px-3 py-1.5 text-sm ${active ? "bg-accent text-white" : "bg-surface text-ink-soft border border-line"}`}>
                 {t.label}
               </Link>
             );
