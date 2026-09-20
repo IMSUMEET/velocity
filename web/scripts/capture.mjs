@@ -40,30 +40,31 @@ async function walkthrough(browser) {
   });
   const p = await ctx.newPage();
 
+  // Operations FIRST — open on the live map so motion grabs attention immediately
+  await p.goto(`${BASE}/operations`);
+  await p.getByText("Live city").first().waitFor({ timeout: 15000 });
+  await sleep(3500);                                    // let the fleet move
+  await p.getByRole("button", { name: "Batch Optimal" }).click();
+  await sleep(4000);                                    // watch batching kick in
+  await p.getByRole("button", { name: "2×" }).click();
+  await sleep(4500);                                    // faster motion
+
   // Lab
-  await p.goto(BASE);
+  await p.getByRole("link", { name: "Lab", exact: true }).click();
   await p.getByText("Verdict").first().waitFor({ timeout: 15000 });
-  await sleep(2000);
+  await sleep(1800);
   await p.getByRole("button", { name: /Run benchmark/ }).click();
   await sleep(2500);
   for (let i = 0; i < 9; i++) { await p.mouse.wheel(0, 90); await sleep(70); }
-  await sleep(2500);
+  await sleep(2200);
   await p.mouse.wheel(0, -900);
-  await sleep(800);
-
-  // Operations
-  await p.getByRole("link", { name: "Operations" }).click();
-  await sleep(4000);
-  await p.getByRole("button", { name: "Batch Optimal" }).click();
-  await sleep(4000);
-  await p.getByRole("button", { name: "2×" }).click();
-  await sleep(4000);
+  await sleep(600);
 
   // Fleet
   await p.getByRole("link", { name: "Fleet & Orders" }).click();
-  await sleep(2500);
+  await sleep(2200);
   for (let i = 0; i < 6; i++) { await p.mouse.wheel(0, 90); await sleep(80); }
-  await sleep(1500);
+  await sleep(1200);
 
   await ctx.close();
   console.log("walkthrough done");
